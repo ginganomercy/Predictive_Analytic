@@ -1,6 +1,6 @@
 # Laporan Proyek Machine Learning Terapan - Rafly Ashraffi Rachmat
 
-## Domain Proyek: Kesehatan
+## 1. Domain Proyek: Kesehatan
 
 Kanker merupakan penyakit akibat pertumbuhan sel abnormal yang tidak terkendali dan bisa menyebar ke jaringan tubuh lainnya. Kondisi ini menjadi penyebab kematian kedua tertinggi di dunia karena sering kali tidak menunjukkan gejala pada tahap awal. Oleh karena itu, deteksi dini sangat penting.
 
@@ -8,7 +8,7 @@ Teknologi *machine learning* telah terbukti mampu membantu diagnosis dini berbag
 
 ---
 
-## Business Understanding
+## 2. Business Understanding
 
 ### Problem Statements:
 
@@ -35,7 +35,7 @@ Model akan dievaluasi menggunakan metrik: Accuracy, Precision, Recall, dan F1-Sc
 
 ---
 
-## Data Understanding
+## 3. Data Understanding
 
 ### Deskripsi Dataset:
 
@@ -81,13 +81,13 @@ Model akan dievaluasi menggunakan metrik: Accuracy, Precision, Recall, dan F1-Sc
 * Penderita kanker cenderung perokok.
   ![Smoking](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotbarbertumpuk.png?raw=true)
 * BMI sedikit lebih tinggi pada penderita kanker.
-  ![BMI](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/distribusi_bmi.png?raw=true)
+  ![BMI](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/distribusibmi.png?raw=true)
 * Risiko genetik tinggi dominan pada kelompok kanker.
   ![Genetik](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotbarbertumpukdiagnosiskanker.png?raw=true)
 
 ---
 
-## Data Preparation
+## 4. Data Preparation
 
 ### Tahapan:
 
@@ -110,7 +110,7 @@ Model akan dievaluasi menggunakan metrik: Accuracy, Precision, Recall, dan F1-Sc
 
 ---
 
-## Model Development
+## 5. Model Development
 
 ### Algoritma dan Cara Kerja Singkat:
 
@@ -131,7 +131,7 @@ Dilakukan tuning sederhana (default vs manual) khusus untuk:
 
 ---
 
-## Evaluation
+## 6. Evaluation
 
 ### Metrik yang Digunakan:
 
@@ -178,6 +178,14 @@ Fitur penting dalam diagnosis:
 2. Model CatBoost dipilih sebagai model terbaik dengan akurasi 92% dan F1-Score tertinggi.
 3. Model memiliki potensi signifikan dalam membantu deteksi dini kanker berbasis data pasien.
 
+---
+## Struktur Laporan
+1. Domain Proyek
+2. Business Understanding
+3. Data Understanding
+4. Data Preparation
+5. Model Development
+6. Evaluation
 ---
 
 ## Referensi:
