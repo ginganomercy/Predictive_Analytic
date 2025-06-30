@@ -4,7 +4,9 @@
 
 Kanker merupakan penyakit akibat pertumbuhan sel abnormal yang tidak terkendali dan bisa menyebar ke jaringan tubuh lainnya. Kondisi ini menjadi penyebab kematian kedua tertinggi di dunia karena sering kali tidak menunjukkan gejala pada tahap awal. Oleh karena itu, deteksi dini sangat penting.
 
-Dalam era modern, teknologi seperti *machine learning* digunakan untuk membantu diagnosis dini berbagai penyakit termasuk kanker. Proyek ini bertujuan untuk memanfaatkan *machine learning* dalam mendeteksi kemungkinan seseorang mengidap kanker berdasarkan data kesehatan pribadi. Dataset diambil dari [Kaggle](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset) dengan 1500 entri dan 9 fitur.
+Teknologi *machine learning* telah terbukti mampu membantu diagnosis dini berbagai penyakit termasuk kanker. Proyek ini bertujuan untuk memanfaatkan *machine learning* dalam mendeteksi risiko kanker berdasarkan data kesehatan pribadi. Dataset digunakan dari [Kaggle](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset) yang berisi 1500 entri dan 9 fitur.
+
+---
 
 ## Business Understanding
 
@@ -20,20 +22,32 @@ Dalam era modern, teknologi seperti *machine learning* digunakan untuk membantu 
 
 ### Solution Statement:
 
-* Menggunakan 6 algoritma ML: XGBoost, Logistic Regression, Decision Tree, K-Nearest Neighbors (KNN), Random Forest, dan CatBoost.
-* Menentukan model terbaik dengan metrik evaluasi akurasi dan F1-score.
+Proyek ini akan membandingkan performa enam algoritma *machine learning*:
+
+* XGBoost
+* Logistic Regression
+* Decision Tree
+* K-Nearest Neighbors (KNN)
+* Random Forest
+* CatBoost
+
+Model akan dievaluasi menggunakan metrik: Accuracy, Precision, Recall, dan F1-Score. Model terbaik dipilih berdasarkan kinerja metrik yang paling seimbang.
+
+---
 
 ## Data Understanding
 
-Dataset berisi informasi demografis dan gaya hidup:
+### Deskripsi Dataset:
 
-* Jumlah baris: 1500, Kolom: 9
-* Tidak terdapat data duplikat dan missing value.
-* Tidak ditemukan outlier ekstrem pada fitur numerik.
+* Jumlah entri: 1500
+* Jumlah fitur: 9 (termasuk target)
+* Sumber: [Kaggle](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset)
+* Tidak ditemukan missing value maupun duplikasi
+* Outlier ekstrem tidak ditemukan pada distribusi fitur numerik
 
-![Gambar Deskripsi Dataset](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/data_info.png?raw=true)
+![Gambar Dataset](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/data_info.png?raw=true)
 
-### Variabel:
+### Daftar Fitur:
 
 | Nama             | Deskripsi                                        |
 | ---------------- | ------------------------------------------------ |
@@ -47,69 +61,126 @@ Dataset berisi informasi demografis dan gaya hidup:
 | CancerHistory    | Riwayat keluarga terkena kanker                  |
 | Diagnosis        | Target (0: tidak kanker, 1: kanker)              |
 
-## Exploratory Data Analysis
+---
+
+## Exploratory Data Analysis (EDA)
 
 ### Univariate Analysis:
 
-* Mayoritas responden: pria, tidak merokok, risiko genetik rendah, tidak punya riwayat kanker, tidak terdiagnosis kanker.
-* Distribusi `Age`, `BMI`, `PhysicalActivity`, dan `AlcoholIntake` tersebar cukup merata.
+* Mayoritas responden adalah pria, tidak merokok, risiko genetik rendah, dan tidak memiliki riwayat kanker.
+* Fitur numerik (`Age`, `BMI`, `PhysicalActivity`, `AlcoholIntake`) memiliki distribusi yang merata.
 
-![Barplot Kategorikal](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/boxplot1.png?raw=true)
+![Distribusi Kategori](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/boxplot1.png?raw=true)
 
 ### Multivariate Analysis:
 
 * Perempuan lebih banyak terdiagnosis kanker dibanding pria.
-  ![Perbandingan Gender](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/jumlahdiagnosisberdasarkankelamin.png?raw=true)
+  ![Per Gender](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/jumlahdiagnosisberdasarkankelamin.png?raw=true)
+* Risiko kanker meningkat pada usia di atas 40 tahun.
+  ![Per Age](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotstripdiagnosis.png?raw=true)
+* Penderita kanker cenderung perokok.
+  ![Smoking](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotbarbertumpuk.png?raw=true)
+* BMI sedikit lebih tinggi pada penderita kanker.
+  ![BMI](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/distribusi_bmi.png?raw=true)
+* Risiko genetik tinggi dominan pada kelompok kanker.
+  ![Genetik](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotbarbertumpukdiagnosiskanker.png?raw=true)
 
-* Kanker lebih umum pada usia >40 tahun.
-  ![Perbandingan Usia](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotstripdiagnosis.png?raw=true)
-
-* Perokok lebih banyak ditemukan di kelompok penderita kanker.
-  ![Perbandingan Merokok](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotbarbertumpuk.png?raw=true)
-
-* BMI pada penderita kanker sedikit lebih tinggi.
-  ![Perbandingan BMI](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/distribusi_bmi.png?raw=true)
-
-* Risiko genetik tinggi dominan pada kelompok dengan kanker.
-  ![Perbandingan Genetik](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotbarbertumpukdiagnosiskanker.png?raw=true)
+---
 
 ## Data Preparation
 
-* Encoding kategori dilakukan menggunakan OrdinalEncoder dan OneHotEncoder.
-* Pembagian data training dan testing: 70:30.
-* Standarisasi dilakukan untuk fitur numerik menggunakan MinMaxScaler.
-* Tidak perlu penanganan khusus untuk outlier karena distribusi data baik.
+### Tahapan:
 
-## Modeling
+1. **Penghapusan Duplikat**: Dicek dan tidak ditemukan data duplikat.
+2. **Missing Value**: Tidak ditemukan.
+3. **Encoding Fitur Kategorikal**:
 
-### Model yang digunakan:
+   * `Gender`, `Smoking`, `CancerHistory` menggunakan *OrdinalEncoder*.
+   * `GeneticRisk` menggunakan *OneHotEncoder* karena memiliki 3 kategori nominal.
+4. **Scaling Fitur Numerik**:
 
-1. **XGBoost**: Akurasi ≈ 85.33%
-2. **Logistic Regression**: Akurasi ≈ 81.11%
-3. **Decision Tree**: Akurasi ≈ 81.56%
-4. **KNN**: Akurasi ≈ 68.22%
-5. **Random Forest**: Akurasi ≈ 90.67%
-6. **CatBoost**: Akurasi ≈ 92.44%
+   * Digunakan **MinMaxScaler** untuk mengubah skala data ke rentang \[0, 1] (**normalisasi**, bukan standarisasi).
+   * Fitur: `Age`, `BMI`, `PhysicalActivity`, `AlcoholIntake`.
+5. **Pembagian Dataset**:
+
+   * Split data ke *training* dan *testing* dengan rasio 70:30 secara *stratified*.
+6. **Penanganan Outlier**:
+
+   * Tidak dilakukan karena distribusi tidak menunjukkan ekstrem.
+
+---
+
+## Model Development
+
+### Algoritma dan Cara Kerja Singkat:
+
+1. **Logistic Regression**: Model linier yang memetakan probabilitas hasil biner.
+2. **Decision Tree**: Pemisahan data berdasarkan fitur paling informatif.
+3. **K-Nearest Neighbors (KNN)**: Klasifikasi berdasarkan kedekatan fitur ke tetangga terdekat.
+4. **Random Forest**: Ensembling dari banyak decision tree untuk hasil stabil.
+5. **XGBoost**: Model boosting berbasis pohon yang dioptimasi untuk kecepatan dan akurasi.
+6. **CatBoost**: Boosting model khusus yang bagus untuk fitur kategorikal dan menangani overfitting.
+
+### Hyperparameter Tuning (Jika Ada):
+
+Dilakukan tuning sederhana (default vs manual) khusus untuk:
+
+* `n_estimators`, `max_depth` (Random Forest)
+* `learning_rate`, `iterations` (CatBoost)
+* `n_neighbors` (KNN)
+
+---
+
+## Evaluation
+
+### Metrik yang Digunakan:
+
+* **Accuracy**: Proporsi prediksi benar
+* **Precision**: Proporsi positif yang benar-benar positif
+* **Recall**: Seberapa banyak kasus positif terdeteksi
+* **F1-Score**: Harmonik dari Precision dan Recall
+
+### Hasil Evaluasi Model:
+
+| Model               | Accuracy   | Precision | Recall   | F1-Score |
+| ------------------- | ---------- | --------- | -------- | -------- |
+| Logistic Regression | 81.11%     | 0.80      | 0.81     | 0.80     |
+| Decision Tree       | 81.56%     | 0.81      | 0.82     | 0.81     |
+| KNN                 | 68.22%     | 0.67      | 0.69     | 0.68     |
+| Random Forest       | 90.67%     | 0.91      | 0.90     | 0.90     |
+| XGBoost             | 85.33%     | 0.85      | 0.85     | 0.85     |
+| **CatBoost**        | **92.44%** | **0.92**  | **0.92** | **0.92** |
 
 ![Perbandingan Akurasi](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/perbandinganakurasi.png?raw=true)
 
-### Evaluasi:
-
-* Metode evaluasi: Confusion Matrix, Accuracy, Precision, Recall, F1-Score.
-* CatBoost memiliki F1-score tertinggi dan kesalahan klasifikasi terendah.
-
 ### Feature Importance (CatBoost):
 
-Fitur yang paling berpengaruh: `Age`, `PhysicalActivity`, `BMI`, `AlcoholIntake`.
+Fitur penting dalam diagnosis:
+
+* `Age`
+* `PhysicalActivity`
+* `BMI`
+* `AlcoholIntake`
 
 ![Feature Importance](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/feature_importance.png?raw=true)
+
+### Keterkaitan dengan Business Understanding:
+
+* Model **CatBoost** dengan akurasi dan F1 tertinggi dapat digunakan untuk membantu skrining awal pasien berisiko.
+* Dapat digunakan sebagai sistem pendukung keputusan medis untuk mendeteksi kemungkinan kanker.
+* Solusi menjawab semua *problem statement* dan mencapai *goals* yang ditetapkan.
+
+---
 
 ## Kesimpulan:
 
 1. Faktor penting dalam risiko kanker meliputi usia, aktivitas fisik, BMI, dan konsumsi alkohol.
-2. Model CatBoost dipilih sebagai model terbaik dengan akurasi tertinggi (92%) dan kesalahan klasifikasi yang rendah.
+2. Model CatBoost dipilih sebagai model terbaik dengan akurasi 92% dan F1-Score tertinggi.
+3. Model memiliki potensi signifikan dalam membantu deteksi dini kanker berbasis data pasien.
+
+---
 
 ## Referensi:
 
-1. [https://www.alodokter.com/penyakit-kanker](https://www.alodokter.com/penyakit-kanker)
-2. [https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset)
+1. [Alodokter - Penyakit Kanker](https://www.alodokter.com/penyakit-kanker)
+2. [Kaggle - Cancer Prediction Dataset](https://www.kaggle.com/datasets/rabieelkharoua/cancer-prediction-dataset)
