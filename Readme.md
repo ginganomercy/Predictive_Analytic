@@ -54,24 +54,24 @@ Dataset berisi informasi demografis dan gaya hidup:
 * Mayoritas responden: pria, tidak merokok, risiko genetik rendah, tidak punya riwayat kanker, tidak terdiagnosis kanker.
 * Distribusi `Age`, `BMI`, `PhysicalActivity`, dan `AlcoholIntake` tersebar cukup merata.
 
-![Barplot Kategorikal](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/barplot_kategorikal.png?raw=true)
+![Barplot Kategorikal](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/boxplot1.png?raw=true)
 
 ### Multivariate Analysis:
 
 * Perempuan lebih banyak terdiagnosis kanker dibanding pria.
-  ![Perbandingan Gender](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/barplot_gender_diagnosis.png?raw=true)
+  ![Perbandingan Gender](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/jumlahdiagnosisberdasarkankelamin.png?raw=true)
 
 * Kanker lebih umum pada usia >40 tahun.
-  ![Perbandingan Usia](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/stripplot_usia.png?raw=true)
+  ![Perbandingan Usia](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotstripdiagnosis.png?raw=true)
 
 * Perokok lebih banyak ditemukan di kelompok penderita kanker.
-  ![Perbandingan Merokok](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/histplot_smoking.png?raw=true)
+  ![Perbandingan Merokok](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotbarbertumpuk.png?raw=true)
 
 * BMI pada penderita kanker sedikit lebih tinggi.
-  ![Perbandingan BMI](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/boxplot_bmi.png?raw=true)
+  ![Perbandingan BMI](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/distribusi_bmi.png?raw=true)
 
 * Risiko genetik tinggi dominan pada kelompok dengan kanker.
-  ![Perbandingan Genetik](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/histplot_geneticrisk.png?raw=true)
+  ![Perbandingan Genetik](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/plotbarbertumpukdiagnosiskanker.png?raw=true)
 
 ## Data Preparation
 
@@ -91,7 +91,7 @@ Dataset berisi informasi demografis dan gaya hidup:
 5. **Random Forest**: Akurasi ≈ 90.67%
 6. **CatBoost**: Akurasi ≈ 92.44%
 
-![Perbandingan Akurasi](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/perbandingan_akurasi.png?raw=true)
+![Perbandingan Akurasi](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/perbandinganakurasi.png?raw=true)
 
 ### Evaluasi:
 
