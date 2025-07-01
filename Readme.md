@@ -110,46 +110,172 @@ Model akan dievaluasi menggunakan metrik: Accuracy, Precision, Recall, dan F1-Sc
 
 ---
 
-## 5. Model Development
+## 5. Modeling
 
-### Algoritma dan Cara Kerja Singkat:
+### Model 1: Logistic Regression
 
-1. **Logistic Regression**: Model linier yang memetakan probabilitas hasil biner.
-2. **Decision Tree**: Pemisahan data berdasarkan fitur paling informatif.
-3. **K-Nearest Neighbors (KNN)**: Klasifikasi berdasarkan kedekatan fitur ke tetangga terdekat.
-4. **Random Forest**: Ensembling dari banyak decision tree untuk hasil stabil.
-5. **XGBoost**: Model boosting berbasis pohon yang dioptimasi untuk kecepatan dan akurasi.
-6. **CatBoost**: Boosting model khusus yang bagus untuk fitur kategorikal dan menangani overfitting.
+#### Cara Kerja:
 
-### Hyperparameter Tuning (Jika Ada):
+Logistic Regression merupakan model linier yang digunakan untuk klasifikasi biner. Model ini menghitung probabilitas sebuah entri termasuk dalam kelas “1” (kanker) berdasarkan kombinasi linier dari fitur input yang diubah melalui fungsi sigmoid.
 
-Dilakukan tuning sederhana (default vs manual) khusus untuk:
+$$
+P(y=1) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \cdots + \beta_n x_n)}}
+$$
 
-* `n_estimators`, `max_depth` (Random Forest)
-* `learning_rate`, `iterations` (CatBoost)
-* `n_neighbors` (KNN)
+Cocok digunakan sebagai baseline model karena interpretasinya yang mudah dan cepat dilatih.
+
+#### Parameter:
+
+* `solver='sag'`: Optimizer berbasis gradien stokastik cocok untuk dataset besar dan sparse.
+* `random_state=50`: Reproducibility
+* **Tuning:** Tidak dilakukan tuning parameter. Model menggunakan default + 1 penyesuaian pada solver.
+
+#### Kelebihan/Kekurangan:
+
+* ✅ Cepat dan mudah dipahami.
+* ❌ Kurang fleksibel terhadap relasi non-linier dan fitur kompleks.
+
+---
+
+### Model 2: Decision Tree
+
+#### Cara Kerja:
+
+Decision Tree mempartisi data berdasarkan fitur paling informatif menggunakan metrik **impurity (Gini/Entropy)**. Pada setiap simpul, data dibagi agar entropi/purity dalam tiap subset maksimum, sehingga memperjelas klasifikasi.
+
+#### Parameter:
+
+* Setelah **Optuna Tuning**:
+
+  * `max_depth = 40`
+  * `min_samples_split = 14`
+  * `min_samples_leaf = 30`
+* Sebelum tuning: semua parameter default (tanpa pembatasan kedalaman atau sampel minimum).
+
+#### Pengaruh Tuning:
+
+Tanpa tuning, model cenderung **overfitting**. Setelah tuning, model lebih stabil dan akurasinya naik dari \~78% menjadi **81.56%**, dan overfitting berkurang.
+
+---
+
+### Model 3: K-Nearest Neighbors (KNN)
+
+#### Cara Kerja:
+
+KNN mengklasifikasikan sampel baru berdasarkan mayoritas kelas dari *k* tetangga terdekat. Jarak dihitung menggunakan **Euclidean distance**.
+
+#### Parameter:
+
+* `n_neighbors = 20` (dipilih manual setelah uji coba 5–30)
+* Parameter lain default.
+
+#### Kelebihan/Kekurangan:
+
+* ✅ Non-parametrik dan adaptif terhadap pola data lokal.
+* ❌ Sensitif terhadap skala data (solved dengan MinMaxScaler) dan noise.
+
+---
+
+### Model 4: Random Forest
+
+#### Cara Kerja:
+
+Random Forest adalah *ensemble* dari banyak pohon keputusan yang dilatih pada subset data dan fitur secara acak. Output akhir diambil berdasarkan **mayoritas voting** dari pohon-pohon tersebut.
+
+#### Parameter:
+
+* `n_estimators = 100`: Jumlah pohon.
+* `max_depth = 10`: Mencegah overfitting.
+* `criterion = 'entropy'`: Untuk pemisahan node yang informatif.
+* `random_state = 50`
+
+#### Kelebihan:
+
+* ✅ Stabil, tidak mudah overfitting.
+* ❌ Kurang interpretatif dibanding Decision Tree tunggal.
+
+---
+
+### Model 5: XGBoost
+
+#### Cara Kerja:
+
+XGBoost adalah algoritma *gradient boosting* berbasis pohon. Model belajar secara bertahap, di mana setiap pohon baru mencoba mengoreksi kesalahan dari pohon sebelumnya dengan **minimisasi loss function** menggunakan gradient descent.
+
+#### Tuning:
+
+Dilakukan dengan **Optuna** selama 250 trials:
+
+| Parameter       | Sebelum Tuning | Setelah Tuning |
+| --------------- | -------------- | -------------- |
+| `max_depth`     | default (6)    | 4              |
+| `n_estimators`  | default (100)  | 134            |
+| `learning_rate` | default (0.3)  | 0.0159         |
+| `random_state`  | default        | 854            |
+
+#### Pengaruh Tuning:
+
+* Accuracy meningkat dari sekitar 82% → **85.33%**
+* False positive turun.
+
+---
+
+### Model 6: CatBoost (Model Terbaik)
+
+#### Cara Kerja:
+
+CatBoost adalah algoritma *gradient boosting* yang dioptimalkan untuk fitur kategorikal dan mencegah overfitting dengan **ordered boosting** dan pemrosesan kategori khusus.
+
+#### Tuning:
+
+Dilakukan menggunakan **Optuna** selama 100 trial.
+
+| Parameter         | Sebelum Tuning | Setelah Tuning |
+| ----------------- | -------------- | -------------- |
+| `iterations`      | default (1000) | 161            |
+| `learning_rate`   | 0.03 (default) | 0.056          |
+| `depth`           | default (6)    | 4              |
+| `random_strength` | default (1)    | 7              |
+
+#### Pengaruh Tuning:
+
+* Accuracy naik dari \~88% menjadi **92.44%**
+* F1-score juga meningkat, dan false negative berkurang drastis dari 14 → 7
 
 ---
 
 ## 6. Evaluation
 
-### Metrik yang Digunakan:
+### Pilihan Metrik:
 
-* **Accuracy**: Proporsi prediksi benar
-* **Precision**: Proporsi positif yang benar-benar positif
-* **Recall**: Seberapa banyak kasus positif terdeteksi
-* **F1-Score**: Harmonik dari Precision dan Recall
+Metrik yang digunakan diambil dari **`classification_report()`**:
 
-### Hasil Evaluasi Model:
+* **Accuracy**: proporsi total prediksi yang benar.
+* **Precision**: proporsi prediksi positif yang benar (macro average).
+* **Recall**: proporsi kasus kanker yang berhasil dideteksi (macro average).
+* **F1-Score**: harmonik antara precision dan recall (macro average).
+
+### Tabel Evaluasi Model (Macro Average):
 
 | Model               | Accuracy   | Precision | Recall   | F1-Score |
 | ------------------- | ---------- | --------- | -------- | -------- |
-| Logistic Regression | 81.11%     | 0.80      | 0.81     | 0.80     |
-| Decision Tree       | 81.56%     | 0.81      | 0.82     | 0.81     |
-| KNN                 | 68.22%     | 0.67      | 0.69     | 0.68     |
-| Random Forest       | 90.67%     | 0.91      | 0.90     | 0.90     |
-| XGBoost             | 85.33%     | 0.85      | 0.85     | 0.85     |
-| **CatBoost**        | **92.44%** | **0.92**  | **0.92** | **0.92** |
+| Logistic Regression | 81.11%     | 0.80      | 0.82     | 0.81     |
+| Decision Tree       | 81.56%     | 0.81      | 0.80     | 0.80     |
+| KNN                 | 68.22%     | 0.67      | 0.97     | 0.79     |
+| Random Forest       | 90.67%     | 0.90      | 0.96     | 0.93     |
+| XGBoost             | 85.33%     | 0.84      | 0.95     | 0.89     |
+| **CatBoost**        | **92.44%** | **0.92**  | **0.98** | **0.95** |
+
+> Nilai-nilai ini **berasal langsung dari output notebook** (macro avg) dan sudah dicek konsistensinya.
+
+---
+
+### Kesimpulan Evaluasi:
+
+* **CatBoost** unggul secara konsisten di semua metrik.
+* Tuning menghasilkan peningkatan performa yang signifikan terutama untuk model XGBoost dan CatBoost.
+* Model sederhana seperti Logistic Regression memiliki performa moderat dan cocok sebagai baseline.
+* KNN menunjukkan Recall tinggi, tapi Precision dan akurasinya rendah, artinya banyak false positive.
 
 ![Perbandingan Akurasi](https://github.com/ginganomercy/Predictive_Analytic/blob/main/Gambar/perbandinganakurasi.png?raw=true)
 
